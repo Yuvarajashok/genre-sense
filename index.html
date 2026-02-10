@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Genre Sense – AI Genre Prediction</title>
+<style>
+:root {
+  --primary: #4f6df5;
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Segoe UI, Arial, sans-serif;
+  background: var(--bg);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text);
+}
+
+.card {
+  background: var(--card);
+  width: 420px;
+  padding: 40px 26px;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 8px 0;
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+button {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  opacity: 0.95;
+  transform: translateY(-2px);
+}
+
+a {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>Genre Sense</h1>
+  <div class="subtitle">AI-powered Image Genre Classification</div>
+  
+  <div class="description">
+    Analyze any image and automatically detect its genre using advanced AI. 
+    Perfect for organizing, tagging, and understanding visual content.
+  </div>
+
+  <button onclick="window.location.href='/'">Get Started</button>
+  
+  <a href="/">Already have an account? Sign in</a>
+</div>
+
+</body>
+</html>

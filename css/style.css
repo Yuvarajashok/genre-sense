@@ -1,0 +1,276 @@
+/* =====================================================
+   GLOBAL THEME (Logo-Based Color Palette)
+===================================================== */
+:root {
+    /* Primary: Professional Blue-Cyan from logo */
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #dbeafe;
+    
+    /* Secondary: Soft Grey for borders and muted elements */
+    --secondary: #cbd5e1;
+    --secondary-light: #e2e8f0;
+    
+    /* Accent: Teal for confidence, progress, highlights */
+    --accent: #14b8a6;
+    --accent-light: #ccfbf1;
+    
+    /* Background */
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-hover: #f1f5f9;
+    
+    /* Text */
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+    
+    /* Utility */
+    --border: #e2e8f0;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+}
+
+/* =====================================================
+   RESET & BASE
+===================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+/* =====================================================
+   LAYOUT
+===================================================== */
+.sidebar {
+    width: 250px;
+    background-color: var(--bg-card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 1px 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.main-content {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+/* Enable layout ONLY for app pages */
+body:has(.sidebar) {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-link {
+    display: block;
+    padding: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+h1 { font-size: 1.8rem; }
+h2 { font-size: 1.4rem; margin-bottom: 15px; }
+h3 { font-size: 1.1rem; }
+
+/* =====================================================
+   CARDS
+===================================================== */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+.btn {
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.1s, opacity 0.1s;
+}
+
+.btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--border);
+}
+
+.btn-danger {
+    background-color: var(--danger);
+}
+
+/* =====================================================
+   FORMS
+===================================================== */
+input, select {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--bg-main);
+    border: 1px solid var(--secondary);
+    color: var(--text-main);
+    border-radius: 6px;
+    margin-bottom: 15px;
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+/* =====================================================
+   AUTH PAGE
+===================================================== */
+.auth-container {
+    max-width: 400px;
+    margin: 100px auto;
+    text-align: center;
+}
+
+/* =====================================================
+   UPLOAD ZONE
+===================================================== */
+.upload-zone {
+    border: 2px dashed var(--secondary);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border 0.2s, background 0.2s;
+    background-color: var(--bg-hover);
+}
+
+.upload-zone:hover {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+/* =====================================================
+   RESULTS
+===================================================== */
+.genre-badge {
+    background-color: var(--primary);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.confidence-bar {
+    height: 8px;
+    background-color: var(--secondary-light);
+    border-radius: 4px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.confidence-fill {
+    height: 100%;
+    background-color: var(--accent);
+}
+
+/* =====================================================
+   TABLES
+===================================================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+}
+
+thead {
+    border-bottom: 1px solid var(--border);
+}
+
+tbody tr:hover {
+    background-color: var(--bg-hover);
+}
+
+/* =====================================================
+   SCROLLBAR (OPTIONAL POLISH)
+===================================================== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-main);
+}

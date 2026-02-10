@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - GenreSence</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo" style="display:flex;align-items:center;gap:10px;">
+        <img src="/gs_logo.webp" alt="GenreSence Logo" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+        <span>GenreSence</span>
+    </div>
+    <nav>
+        <a href="/page/dashboard" class="nav-link">📊 Dashboard</a>
+        <a href="/page/history" class="nav-link">📜 History</a>
+        <a href="/page/profile" class="nav-link">👤 Profile</a>
+        <a href="/page/about" class="nav-link active">ℹ️ About</a>
+    </nav>
+    <div style="margin-top:auto;">
+        <button onclick="User.logout()" class="btn btn-secondary" style="width:100%;">Logout</button>
+    </div>
+</div>
+
+<!-- Main -->
+<div class="main-content">
+    <div class="header">
+        <h1>About Genre Sense</h1>
+    </div>
+
+    <div style="max-width:800px;">
+        <div class="card">
+            <h2>🎯 Purpose</h2>
+            <p>
+                Genre Sense is an academic multimodal machine learning system designed to automatically classify 
+                images into semantic genres. It combines computer vision and natural language processing to analyze 
+                visual content and extracted text, providing intelligent genre predictions.
+            </p>
+
+            <h2 style="margin-top:30px;">🧠 ML Pipeline</h2>
+            <p>
+                The system uses a three-stage pipeline:
+            </p>
+            <ul style="line-height:1.8;">
+                <li><strong>Visual Analysis:</strong> CLIP-based image embeddings extract visual features and classify visual types (portrait, logo, poster, event, scene)</li>
+                <li><strong>Text Extraction:</strong> Tesseract OCR extracts readable text from images for language-based analysis</li>
+                <li><strong>Fusion & Scoring:</strong> Language-aware multimodal fusion merges vision and text signals with dynamic weighting</li>
+            </ul>
+
+            <h2 style="margin-top:30px;">⚙️ Technologies</h2>
+            <ul style="line-height:1.8;">
+                <li><strong>Backend:</strong> Python, FastAPI, SQLite</li>
+                <li><strong>ML:</strong> OpenAI CLIP, Tesseract OCR, PyTorch</li>
+                <li><strong>Frontend:</strong> Plain HTML, CSS, JavaScript (no frameworks)</li>
+                <li><strong>Architecture:</strong> Modular, microservice-ready design</li>
+            </ul>
+
+            <h2 style="margin-top:30px;">📊 Genres Supported</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px;">
+                <div style="padding:15px;background:rgba(79,109,245,.1);border-radius:8px;">
+                    <p style="margin:0;font-weight:bold;">📚 Educational</p>
+                    <p style="margin:5px 0 0 0;font-size:.9rem;color:var(--text-muted);">Learning, teaching, tutorials</p>
+                </div>
+                <div style="padding:15px;background:rgba(79,109,245,.1);border-radius:8px;">
+                    <p style="margin:0;font-weight:bold;">📰 Informational</p>
+                    <p style="margin:5px 0 0 0;font-size:.9rem;color:var(--text-muted);">News, guides, facts</p>
+                </div>
+                <div style="padding:15px;background:rgba(79,109,245,.1);border-radius:8px;">
+                    <p style="margin:0;font-weight:bold;">🎭 Entertainment</p>
+                    <p style="margin:5px 0 0 0;font-size:.9rem;color:var(--text-muted);">Movies, music, shows</p>
+                </div>
+                <div style="padding:15px;background:rgba(79,109,245,.1);border-radius:8px;">
+                    <p style="margin:0;font-weight:bold;">❤️ Emotional</p>
+                    <p style="margin:5px 0 0 0;font-size:.9rem;color:var(--text-muted);">Feelings, portraits, moments</p>
+                </div>
+                <div style="padding:15px;background:rgba(79,109,245,.1);border-radius:8px;">
+                    <p style="margin:0;font-weight:bold;">🛍️ Promotional</p>
+                    <p style="margin:5px 0 0 0;font-size:.9rem;color:var(--text-muted);">Ads, offers, sales</p>
+                </div>
+                <div style="padding:15px;background:rgba(79,109,245,.1);border-radius:8px;">
+                    <p style="margin:0;font-weight:bold;">⚠️ Awareness</p>
+                    <p style="margin:5px 0 0 0;font-size:.9rem;color:var(--text-muted);">Safety, health, social</p>
+                </div>
+                <div style="padding:15px;background:rgba(79,109,245,.1);border-radius:8px;">
+                    <p style="margin:0;font-weight:bold;">🙏 Spiritual</p>
+                    <p style="margin:5px 0 0 0;font-size:.9rem;color:var(--text-muted);">Faith, prayer, meditation</p>
+                </div>
+            </div>
+
+            <h2 style="margin-top:30px;">⚠️ Limitations</h2>
+            <ul style="line-height:1.8;">
+                <li>Model accuracy depends on image quality and clarity</li>
+                <li>OCR may struggle with handwritten text, poor quality images, or non-Latin scripts</li>
+                <li>Genre classification reflects training data patterns and may have cultural or contextual biases</li>
+                <li>Best performance on clear, well-lit images with readable text</li>
+                <li>Visual type classification (portrait/logo/poster/event/scene) improves genre prediction accuracy</li>
+            </ul>
+
+            <h2 style="margin-top:30px;">📝 Academic Context</h2>
+            <p>
+                This project is an academic proof-of-concept demonstrating multimodal learning techniques for 
+                image classification. It showcases practical application of deep learning models, data fusion strategies, 
+                and full-stack development patterns suitable for real-world ML systems.
+            </p>
+
+            <div style="margin-top:30px;padding:20px;background:#f0f4ff;border-radius:8px;border-left:4px solid var(--primary);">
+                <p style="margin:0;font-weight:bold;color:var(--primary);">🚀 Version 1.0.0</p>
+                <p style="margin:5px 0 0 0;font-size:.9rem;color:var(--text-muted);">
+                    Built with Python, FastAPI, CLIP, and Tesseract OCR
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+User.requireAuth();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - GenreSence</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="auth-container">
+    <h1 class="logo" style="justify-content:center;">
+        <img src="/gs_logo.webp" alt="GenreSence Logo" style="width:50px;height:50px;border-radius:50%;object-fit:cover;">
+        <span style="margin-left:10px;">GenreSence</span>
+    </h1>
+
+    <p style="text-align:center;color:var(--text-muted);margin-bottom:20px;">
+        AI-powered Image & Text Genre Analysis
+    </p>
+
+    <div class="card">
+
+        <!-- Mode Toggle -->
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+            <button class="btn" style="flex:1;" id="btn-show-login">Login</button>
+            <button class="btn btn-secondary" style="flex:1;" id="btn-show-signup">Signup</button>
+        </div>
+
+        <!-- Login -->
+        <form id="login-form">
+            <input type="text" id="l-username" placeholder="Username" required>
+            <input type="password" id="l-password" placeholder="Password" required>
+            <button type="submit" class="btn" style="width:100%;">Login</button>
+        </form>
+
+        <!-- Signup -->
+        <form id="signup-form" style="display:none;">
+            <input type="text" id="s-username" placeholder="Username (min 3 chars)" required>
+            <input type="email" id="s-email" placeholder="Email" required>
+            <input type="password" id="s-password" placeholder="Password (min 6 chars)" required>
+
+            <select id="s-genre" required>
+                <option value="" disabled selected>Select Default Genre</option>
+                <option value="educational">Educational</option>
+                <option value="informational">Informational</option>
+                <option value="awareness">Awareness</option>
+                <option value="promotional">Promotional</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="emotional">Emotional</option>
+                <option value="spiritual">Spiritual</option>
+            </select>
+
+            <button type="submit" class="btn" style="width:100%;">Create Account</button>
+        </form>
+
+        <p id="auth-msg"
+           style="margin-top:15px;text-align:center;font-size:.9rem;"></p>
+    </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+/* ---------- AUTO REDIRECT IF LOGGED IN ---------- */
+if (User.get()) {
+    window.location.href = "/page/dashboard";
+}
+
+/* ---------- MODE TOGGLE ---------- */
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
+const msg = document.getElementById('auth-msg');
+const btnLoginTab = document.getElementById('btn-show-login');
+const btnSignupTab = document.getElementById('btn-show-signup');
+
+function showMode(mode){
+    msg.textContent = '';
+    msg.style.color = '';
+
+    loginForm.style.display = mode === 'login' ? 'block' : 'none';
+    signupForm.style.display = mode === 'signup' ? 'block' : 'none';
+
+    btnLoginTab.className = mode === 'login' ? 'btn' : 'btn btn-secondary';
+    btnSignupTab.className = mode === 'signup' ? 'btn' : 'btn btn-secondary';
+}
+
+btnLoginTab.onclick = () => showMode('login');
+btnSignupTab.onclick = () => showMode('signup');
+
+/* ---------- LOGIN ---------- */
+loginForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    msg.textContent = '';
+
+    const username = document.getElementById('l-username').value.trim();
+    const password = document.getElementById('l-password').value.trim();
+
+    if (!username || !password) return;
+
+    const btn = loginForm.querySelector('button');
+    btn.disabled = true;
+
+    try {
+        const res = await api.post('/auth/login', { username, password });
+        User.login(res.user);
+    } catch (err) {
+        msg.textContent = err.message || "Login failed";
+        msg.style.color = '#ef4444';
+    } finally {
+        btn.disabled = false;
+    }
+});
+
+/* ---------- SIGNUP ---------- */
+signupForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    msg.textContent = '';
+
+    const data = {
+        username: document.getElementById('s-username').value.trim(),
+        email: document.getElementById('s-email').value.trim(),
+        password: document.getElementById('s-password').value.trim(),
+        default_genre: document.getElementById('s-genre').value
+    };
+
+    if (!data.username || !data.email || !data.password || !data.default_genre) {
+        msg.textContent = 'All fields required';
+        msg.style.color = '#ef4444';
+        return;
+    }
+
+    if (data.username.length < 3) {
+        msg.textContent = 'Username must be at least 3 characters';
+        msg.style.color = '#ef4444';
+        return;
+    }
+
+    if (data.username.includes(' ')) {
+        msg.textContent = 'Username cannot contain spaces';
+        msg.style.color = '#ef4444';
+        return;
+    }
+
+    if (data.password.length < 6) {
+        msg.textContent = 'Password must be at least 6 characters';
+        msg.style.color = '#ef4444';
+        return;
+    }
+
+    const btn = signupForm.querySelector('button');
+    btn.disabled = true;
+
+    try {
+        await api.post('/auth/signup', data);
+        msg.textContent = "Account created successfully. Please login.";
+        msg.style.color = 'var(--success)';
+        showMode('login');
+    } catch (err) {
+        msg.textContent = err.message || "Signup failed";
+        msg.style.color = '#ef4444';
+    } finally {
+        btn.disabled = false;
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - GenreSence</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo" style="display:flex;align-items:center;gap:10px;">
+        <img src="/gs_logo.webp" alt="GenreSence Logo" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+        <span>GenreSence</span>
+    </div>
+    <nav>
+        <a href="/page/dashboard" class="nav-link active">📊 Dashboard</a>
+        <a href="/page/history" class="nav-link">📜 History</a>
+        <a href="/page/profile" class="nav-link">👤 Profile</a>
+        <a href="/page/about" class="nav-link">ℹ️ About</a>
+    </nav>
+    <div style="margin-top:auto;">
+        <button onclick="User.logout()" class="btn btn-secondary" style="width:100%;">Logout</button>
+    </div>
+</div>
+
+<!-- Main -->
+<div class="main-content">
+    <div class="header">
+        <h1>New Analysis</h1>
+        <div>Welcome, <span id="user-name-display" style="color:var(--primary);">User</span></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;">
+
+        <!-- Upload -->
+        <div class="card">
+            <h2>📤 Upload Content</h2>
+
+            <div class="upload-zone" id="drop-zone">
+                <p style="font-size:2rem;">🖼️</p>
+                <p>Click or Drop Image Here</p>
+            </div>
+
+            <input type="file" id="file-input" hidden accept="image/*">
+
+            <div id="preview-container" style="display:none;margin-top:20px;">
+                <img id="img-preview" style="max-width:100%;border-radius:8px;">
+                <button id="btn-analyze" class="btn" style="width:100%;margin-top:15px;">
+                    🔍 Analyze Genre
+                </button>
+            </div>
+        </div>
+
+        <!-- Result -->
+        <div>
+            <div class="card" id="result-card" style="display:none;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <h2>🎯 Result</h2>
+                    <span id="res-ambiguous" style="color:#fbbf24;font-weight:bold;display:none;">
+                        ⚠️ Ambiguous
+                    </span>
+                </div>
+
+                <div style="text-align:center;margin:30px 0;">
+                    <div id="res-emoji" style="font-size:3rem;">🎭</div>
+                    <h3 id="res-genre" style="font-size:2rem;color:var(--primary);"></h3>
+                    <p id="res-confidence" style="color:var(--text-muted);"></p>
+                </div>
+
+                <div style="background:rgba(0,0,0,.2);padding:15px;border-radius:8px;">
+                    <p><strong>Visual Type:</strong> <span id="res-visual-type"></span></p>
+                </div>
+
+                <div style="margin-top:20px;">
+                    <h4>Top Candidates</h4>
+                    <div id="candidates-list"></div>
+                </div>
+
+                <a href="/page/history" class="btn btn-secondary"
+                   style="display:block;text-align:center;margin-top:20px;">
+                    View in History
+                </a>
+            </div>
+
+            <div class="card" id="loading-card"
+                 style="display:none;text-align:center;padding:50px;">
+                <h2>🔄 Analyzing…</h2>
+                <p>Extracting features and fusing scores</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+User.requireAuth();
+
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+const previewImg = document.getElementById('img-preview');
+const analyzeBtn = document.getElementById('btn-analyze');
+
+let selectedFile = null;
+
+/* ---------- Upload Handling ---------- */
+dropZone.onclick = () => fileInput.click();
+
+dropZone.addEventListener('dragover', e => {
+    e.preventDefault();
+    dropZone.style.borderColor = 'var(--primary)';
+});
+
+dropZone.addEventListener('dragleave', () => {
+    dropZone.style.borderColor = '';
+});
+
+dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.style.borderColor = '';
+    if (e.dataTransfer.files[0]) {
+        handleFile(e.dataTransfer.files[0]);
+    }
+});
+
+fileInput.addEventListener('change', e => {
+    if (e.target.files[0]) {
+        handleFile(e.target.files[0]);
+    }
+});
+
+function handleFile(file){
+    selectedFile = file;
+    const reader = new FileReader();
+    reader.onload = e => {
+        previewImg.src = e.target.result;
+        document.getElementById('preview-container').style.display = 'block';
+        document.getElementById('result-card').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+}
+
+/* ---------- Analyze ---------- */
+analyzeBtn.addEventListener('click', async () => {
+    if (!selectedFile) return;
+
+    const user = User.get();
+    if (!user) {
+        User.logout();
+        return;
+    }
+
+    analyzeBtn.disabled = true;
+    document.getElementById('loading-card').style.display = 'block';
+    document.getElementById('result-card').style.display = 'none';
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('user_id', user.id);
+
+    try {
+        const res = await api.upload('/predict', formData);
+        renderResult(res);
+    } catch (e) {
+        alert("Analysis failed");
+    } finally {
+        analyzeBtn.disabled = false;
+        document.getElementById('loading-card').style.display = 'none';
+    }
+});
+
+/* ---------- Render ---------- */
+function renderResult(data){
+    document.getElementById('result-card').style.display = 'block';
+    const user = User.get();
+
+    document.getElementById('res-genre').textContent = data.top_genre.toUpperCase();
+    document.getElementById('res-confidence').textContent =
+        `Confidence: ${(data.confidence * 100).toFixed(1)}%`;
+    document.getElementById('res-visual-type').textContent = data.visual_type;
+
+    document.getElementById('res-ambiguous').style.display =
+        data.ambiguous ? 'inline' : 'none';
+
+    const list = document.getElementById('candidates-list');
+    list.innerHTML = '';
+
+    data.top_3.forEach(item => {
+        const pct = (item.score * 100).toFixed(1);
+        const isDefault = user.default_genre === item.genre;
+        list.insertAdjacentHTML('beforeend', `
+            <div style="margin-bottom:10px;">
+                <div style="display:flex;justify-content:space-between;font-size:.9rem;">
+                    <span>${item.genre}${isDefault ? ' ⭐ (Your Preference)' : ''}</span>
+                    <span>${pct}%</span>
+                </div>
+                <div class="confidence-bar">
+                    <div class="confidence-fill" style="width:${pct}%;${isDefault ? 'background:linear-gradient(90deg,#4f6df5,#6f86ff);' : ''}"></div>
+                </div>
+            </div>
+        `);
+    });
+
+    // Show default genre match
+    const defaultGenreScore = data.top_3.find(g => g.genre === user.default_genre);
+    if (defaultGenreScore) {
+        const matchPct = (defaultGenreScore.score * 100).toFixed(1);
+        list.insertAdjacentHTML('beforeend', `
+            <div style="margin-top:20px;padding:15px;background:rgba(79,109,245,.1);border-left:4px solid var(--primary);border-radius:4px;">
+                <p style="margin:0;font-weight:bold;color:var(--primary);">
+                    Default Genre Match: ${matchPct}%
+                </p>
+                <p style="margin:5px 0 0 0;font-size:.85rem;color:var(--text-muted);">
+                    Matches your preference: ${user.default_genre}
+                </p>
+            </div>
+        `);
+    } else {
+        list.insertAdjacentHTML('beforeend', `
+            <div style="margin-top:20px;padding:15px;background:rgba(229,83,75,.1);border-left:4px solid #ef4444;border-radius:4px;">
+                <p style="margin:0;font-weight:bold;color:#ef4444;">
+                    Default Genre Match: Low match
+                </p>
+                <p style="margin:5px 0 0 0;font-size:.85rem;color:var(--text-muted);">
+                    ${user.default_genre} is not in top 3 predictions
+                </p>
+            </div>
+        `);
+    }
+}
+</script>
+
+</body>
+</html>

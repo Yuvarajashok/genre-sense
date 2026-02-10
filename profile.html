@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - GenreSence</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo" style="display:flex;align-items:center;gap:10px;">
+        <img src="/gs_logo.webp" alt="GenreSence Logo" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+        <span>GenreSence</span>
+    </div>
+    <nav>
+        <a href="/page/dashboard" class="nav-link">📊 Dashboard</a>
+        <a href="/page/history" class="nav-link">📜 History</a>
+        <a href="/page/profile" class="nav-link active">👤 Profile</a>
+        <a href="/page/about" class="nav-link">ℹ️ About</a>
+    </nav>
+    <div style="margin-top:auto;">
+        <button onclick="User.logout()" class="btn btn-secondary" style="width:100%;">Logout</button>
+    </div>
+</div>
+
+<!-- Main -->
+<div class="main-content">
+    <div class="header">
+        <h1>User Profile</h1>
+    </div>
+
+    <div style="max-width:600px;">
+        <div class="card">
+            <h2>👤 My Account</h2>
+
+            <div style="display:flex;gap:20px;align-items:center;margin-bottom:20px;">
+                <div id="avatar" style="width:80px;height:80px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;cursor:pointer;position:relative;" onclick="document.getElementById('photo-input').click();">
+                    <img id="avatar-img" style="width:100%;height:100%;object-fit:cover;display:none;">
+                    <span id="avatar-text">👤</span>
+                    <div style="position:absolute;bottom:0;right:0;background:#333;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;border:2px solid white;">📷</div>
+                </div>
+
+                <div>
+                    <h3 id="p-username">—</h3>
+                    <p id="p-email" style="color:var(--text-muted);">—</p>
+                    <p style="font-size:.8rem;color:#999;">Click photo to upload</p>
+                </div>
+            </div>
+
+            <input type="file" id="photo-input" hidden accept="image/*">
+
+            <div style="margin-top:20px;">
+                <label>Default Genre Preference</label>
+                <div style="display:flex;gap:10px;">
+                    <select id="p-genre-select" style="flex:1;">
+                        <option value="educational">Educational</option>
+                        <option value="informational">Informational</option>
+                        <option value="awareness">Awareness</option>
+                        <option value="promotional">Promotional</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="emotional">Emotional</option>
+                        <option value="spiritual">Spiritual</option>
+                    </select>
+                    <button id="btn-save-genre" class="btn" style="padding:0 20px;">💾 Save</button>
+                </div>
+            </div>
+
+            <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);">
+                <h3>ℹ️ About Genre Sense</h3>
+                <p style="color:var(--text-muted);margin-top:10px;">
+                    An academic system for multimodal genre prediction using
+                    vision-language embeddings and OCR-based text analysis.
+                </p>
+
+                <ul style="margin-top:10px;padding-left:20px;color:var(--text-muted);">
+                    <li><strong>Tech Stack:</strong> Python, FastAPI, SQLite, CLIP, Tesseract OCR</li>
+                    <li><strong>Architecture:</strong> Modular ML pipeline with fusion logic</li>
+                    <li><strong>Version:</strong> 1.0.0</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+/* ---------- AUTH ---------- */
+User.requireAuth();
+const user = User.get();
+if (!user) User.logout();
+
+/* ---------- RENDER USER INFO ---------- */
+document.getElementById('p-username').textContent = user.username || "Unknown User";
+document.getElementById('p-email').textContent = user.email || "Email not available";
+document.getElementById('p-genre-select').value = user.default_genre || "entertainment";
+
+/* ---------- GENRE SAVE ---------- */
+document.getElementById('btn-save-genre').addEventListener('click', async () => {
+    const btn = document.getElementById('btn-save-genre');
+    const genre = document.getElementById('p-genre-select').value;
+    btn.disabled = true;
+    try {
+        await api.post('/user/update-genre', { user_id: user.id, default_genre: genre });
+        user.default_genre = genre;
+        localStorage.setItem('user', JSON.stringify(user));
+        alert('Genre updated successfully');
+    } catch (err) {
+        alert('Failed: ' + err.message);
+    } finally {
+        btn.disabled = false;
+    }
+});
+
+/* ---------- PHOTO UPLOAD ---------- */
+const photoInput = document.getElementById('photo-input');
+const avatar = document.getElementById('avatar');
+
+photoInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    avatar.style.opacity = '0.5';
+    const formData = new FormData();
+    formData.append('user_id', user.id);
+    formData.append('file', file);
+
+    try {
+        const res = await api.upload('/user/update-profile-pic', formData);
+        user.profile_pic = res.profile_pic;
+        localStorage.setItem('user', JSON.stringify(user));
+        showProfilePhoto();
+        alert('Photo updated successfully');
+    } catch (err) {
+        alert('Upload failed: ' + err.message);
+    } finally {
+        avatar.style.opacity = '1';
+        photoInput.value = '';
+    }
+});
+
+function showProfilePhoto() {
+    const img = document.getElementById('avatar-img');
+    const text = document.getElementById('avatar-text');
+    if (user.profile_pic) {
+        img.src = user.profile_pic;
+        img.style.display = 'block';
+        text.style.display = 'none';
+    } else {
+        img.style.display = 'none';
+        text.style.display = 'block';
+        text.textContent = user.username ? user.username.charAt(0).toUpperCase() : '👤';
+    }
+}
+
+showProfilePhoto();
+</script>
+
+</body>
+</html>
