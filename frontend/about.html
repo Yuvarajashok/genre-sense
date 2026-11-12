@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem("genresense_theme");
+        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", savedTheme || (prefersDark ? "dark" : "light"));
+      } catch (error) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+  <title>About - Genre Sense</title>
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css?v=20260323a">
+  <link rel="stylesheet" href="/css/layout.css?v=20260323a">
+  <link rel="stylesheet" href="/css/components.css?v=20260323a">
+</head>
+<body>
+  <script src="/js/api.js?v=20260323a"></script>
+  <script src="/js/auth.js?v=20260323a"></script>
+  <script src="/js/ui.js?v=20260323a"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const user = GenreSenseAuth.requireAuth();
+      if (!user) return;
+
+      document.body.innerHTML = GenreSenseUI.buildAppShell({
+        active: "about",
+        title: "About",
+        subtitle: "System overview, AI pipeline, supported genres, limitations, and FAQs.",
+        content: `<section class="page-grid"><div class="page-grid page-grid--2"><div class="card stack"><div><h3 class="card__title">System Overview</h3><p class="card__subtitle">GenreSense predicts the semantic genre of an uploaded image by combining visual understanding and OCR text cues inside a single fusion pipeline.</p></div><div class="info-grid"><div class="metric"><div class="metric__value">Vision</div><div class="metric__label">Extracts embeddings and visual type cues.</div></div><div class="metric"><div class="metric__value">Text</div><div class="metric__label">Reads visible text from posters, flyers, and informational layouts.</div></div><div class="metric"><div class="metric__value">Fusion</div><div class="metric__label">Combines multiple signals into final ranked predictions.</div></div></div></div><div class="card stack"><div><h3 class="card__title">Technology Stack</h3></div><div class="metric"><div class="metric__value">Backend</div><div class="metric__label">Python, FastAPI, SQLite</div></div><div class="metric"><div class="metric__value">ML</div><div class="metric__label">CLIP embeddings, OCR, multimodal scoring</div></div><div class="metric"><div class="metric__value">Frontend</div><div class="metric__label">HTML, CSS, Vanilla JavaScript, Chart.js</div></div></div></div><div class="card stack"><div><h3 class="card__title">AI Pipeline Diagram</h3></div><div class="pipeline"><div class="pipeline-step"><strong>1. Visual Analysis</strong><p style="margin:10px 0 0;color:var(--color-text-soft);">Embeddings identify scene structure, subject type, and visual category.</p></div><div class="pipeline-step"><strong>2. OCR Extraction</strong><p style="margin:10px 0 0;color:var(--color-text-soft);">Text is read from banners, posters, and social creatives.</p></div><div class="pipeline-step"><strong>3. Fusion Scoring</strong><p style="margin:10px 0 0;color:var(--color-text-soft);">Signals are merged to rank the most likely genres and confidence values.</p></div></div></div><div class="card stack"><div><h3 class="card__title">Supported Genres</h3></div><div class="genre-icon-grid"><article class="genre-icon-card"><div class="genre-icon-card__icon">📘</div><strong>Educational</strong><p style="margin:10px 0 0;color:var(--color-text-soft);">Tutorials, lessons, and learning content.</p></article><article class="genre-icon-card"><div class="genre-icon-card__icon">📰</div><strong>Informational</strong><p style="margin:10px 0 0;color:var(--color-text-soft);">Facts, explainers, and updates.</p></article><article class="genre-icon-card"><div class="genre-icon-card__icon">📢</div><strong>Awareness</strong><p style="margin:10px 0 0;color:var(--color-text-soft);">Campaigns and cause-led communication.</p></article><article class="genre-icon-card"><div class="genre-icon-card__icon">🛍</div><strong>Promotional</strong><p style="margin:10px 0 0;color:var(--color-text-soft);">Sales, offers, and marketing creatives.</p></article><article class="genre-icon-card"><div class="genre-icon-card__icon">🎬</div><strong>Entertainment</strong><p style="margin:10px 0 0;color:var(--color-text-soft);">Movies, music, and engaging visuals.</p></article><article class="genre-icon-card"><div class="genre-icon-card__icon">💙</div><strong>Emotional</strong><p style="margin:10px 0 0;color:var(--color-text-soft);">Personal moments and mood-driven imagery.</p></article><article class="genre-icon-card"><div class="genre-icon-card__icon">🙏</div><strong>Spiritual</strong><p style="margin:10px 0 0;color:var(--color-text-soft);">Faith, prayer, and reflective content.</p></article></div></div><div class="page-grid page-grid--2"><div class="card stack"><div><h3 class="card__title">Limitations</h3></div><ul style="margin:0;padding-left:18px;color:var(--color-text-soft);line-height:1.8;"><li>Low-quality or noisy images reduce OCR and visual accuracy.</li><li>Some genres naturally overlap, causing close competing scores.</li><li>Bias from training data can influence genre interpretation.</li><li>Non-Latin scripts or handwritten text may weaken OCR extraction.</li></ul></div><div class="card stack"><div><h3 class="card__title">FAQs</h3></div><div class="stack"><div class="metric"><div class="metric__value">What does GenreSense analyze?</div><div class="metric__label">It combines image features and OCR text to predict the most likely content genre.</div></div><div class="metric"><div class="metric__value">Why do some results show ambiguity?</div><div class="metric__label">Some visuals fit multiple genres, so the top scores can be very close.</div></div><div class="metric"><div class="metric__value">Can I personalize the results?</div><div class="metric__label">Yes. Set your default genre in Profile and the dashboard will highlight that preference.</div></div></div></div></div></section>`
+      });
+
+      GenreSenseUI.initShell();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem("genresense_theme");
+        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", savedTheme || (prefersDark ? "dark" : "light"));
+      } catch (error) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+  <title>Login - Genre Sense</title>
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css?v=20260323a">
+  <link rel="stylesheet" href="/css/layout.css?v=20260323a">
+  <link rel="stylesheet" href="/css/components.css?v=20260323a">
+</head>
+<body>
+  <main class="auth-pro page-fade">
+    <section class="auth-pro__hero">
+      <div class="auth-pro__hero-inner">
+        <div class="auth-pro__brand">
+          <a class="auth-pro__logo" href="/" aria-label="Genre Sense home"><img src="/css/gs_logo.png" alt="Genre Sense logo"></a>
+          <span class="auth-pro__brand-name">Genre Sense</span>
+        </div>
+        <div class="auth-pro__hero-copy">
+          <h1 class="auth-pro__title">See visual stories through<br><span>your genre lens.</span></h1>
+          <p class="auth-pro__subtitle">Review image content, understand its strongest genre, and keep your history and profile in one modern academic workspace.</p>
+        </div>
+        <div class="auth-pro__visual" aria-hidden="true">
+          <div class="auth-pro__pill auth-pro__pill--top">Vision + OCR</div>
+          <div class="auth-pro__pill auth-pro__pill--right">Top Result</div>
+          <div class="auth-pro__card auth-pro__card--left"><div class="auth-pro__card-image auth-pro__card-image--one"></div></div>
+          <div class="auth-pro__card auth-pro__card--back"><div class="auth-pro__card-image auth-pro__card-image--three"></div></div>
+          <div class="auth-pro__card auth-pro__card--center"><div class="auth-pro__card-image auth-pro__card-image--two"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-pro__panel">
+      <div class="auth-pro__panel-inner">
+        <button class="auth-pro__theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">Dark Mode</button>
+        <div class="auth-pro__card-shell" data-auth-card-shell>
+          <div class="auth-pro__slider">
+            <div class="auth-pro__form-panel auth-pro__form-panel--login">
+              <form id="login-form" class="auth-pro__form auth-pro__form--active">
+                <h2 class="auth-pro__heading">Log in to Genre Sense</h2>
+                <p class="auth-pro__intro">Continue with your saved genre preferences, history, and profile workspace.</p>
+                <div class="auth-pro__group">
+                  <input id="login-username" class="auth-pro__input" type="text" placeholder="Username or email" required>
+                  <input id="login-password" class="auth-pro__input" type="password" placeholder="Password" required>
+                </div>
+                <div class="auth-pro__actions">
+                  <button class="auth-pro__button auth-pro__button--primary" type="submit">Log in</button>
+                  <a href="#" class="auth-pro__link" id="forgot-password-link">Forgot password?</a>
+                </div>
+                <a class="auth-pro__faq-link" href="/page/faq">Read FAQs</a>
+              </form>
+            </div>
+
+            <div class="auth-pro__form-panel auth-pro__form-panel--signup">
+              <form id="signup-form" class="auth-pro__form" aria-hidden="true" inert>
+                <h2 class="auth-pro__heading">Create your account</h2>
+                <p class="auth-pro__intro">Set your default genre once and start organizing new predictions immediately.</p>
+                <div class="auth-pro__group auth-pro__group--signup">
+                  <input id="signup-username" class="auth-pro__input" type="text" placeholder="Username" required>
+                  <input id="signup-email" class="auth-pro__input" type="email" placeholder="Email address" required>
+                  <input id="signup-password" class="auth-pro__input" type="password" placeholder="Password" required>
+                  <select id="signup-genre" class="auth-pro__select" required>
+                    <option value="educational">Educational</option>
+                    <option value="informational">Informational</option>
+                    <option value="awareness">Awareness</option>
+                    <option value="promotional">Promotional</option>
+                    <option value="entertainment" selected>Entertainment</option>
+                    <option value="emotional">Emotional</option>
+                    <option value="spiritual">Spiritual</option>
+                  </select>
+                </div>
+                <div class="auth-pro__actions">
+                  <button class="auth-pro__button auth-pro__button--primary" type="submit">Create account</button>
+                </div>
+              </form>
+            </div>
+
+            <aside class="auth-pro__switch-panel" aria-hidden="true">
+              <div class="auth-pro__switch-copy auth-pro__switch-copy--login">
+                <span class="auth-pro__switch-kicker">New to Genre Sense?</span>
+                <h3 class="auth-pro__switch-title">Create your account</h3>
+                <p class="auth-pro__switch-text">Save your preferred genre, keep image history, and continue from one workspace.</p>
+                <button class="auth-pro__switch-button" type="button" id="switch-signup">Create account</button>
+              </div>
+              <div class="auth-pro__switch-copy auth-pro__switch-copy--signup">
+                <span class="auth-pro__switch-kicker">Already have an account?</span>
+                <h3 class="auth-pro__switch-title">Welcome back</h3>
+                <p class="auth-pro__switch-text">Sign in to review predictions, revisit uploads, and manage your profile.</p>
+                <button class="auth-pro__switch-button" type="button" id="switch-login">Sign in</button>
+              </div>
+            </aside>
+          </div>
+        </div>
+        <p id="auth-message" class="auth-pro__message"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="auth-footer auth-footer--insta">
+    <span>Powered by Genre Sense</span>
+    <a href="https://www.instagram.com/genre_sense" target="_blank" rel="noreferrer">Instagram: genre_sense</a>
+  </footer>
+
+  <script src="/js/api.js?v=20260323a"></script>
+  <script src="/js/auth.js?v=20260323a"></script>
+  <script src="/js/ui.js?v=20260323a"></script>
+  <script src="/js/auth-page.js?v=20260323a"></script>
+</body>
+</html>

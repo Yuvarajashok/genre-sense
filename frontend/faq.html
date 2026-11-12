@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem("genresense_theme");
+        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", savedTheme || (prefersDark ? "dark" : "light"));
+      } catch (error) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+  <title>FAQ - Genre Sense</title>
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css?v=20260323a">
+  <link rel="stylesheet" href="/css/layout.css?v=20260323a">
+  <link rel="stylesheet" href="/css/components.css?v=20260323a">
+</head>
+<body>
+  <main class="faq-page page-fade">
+    <section class="faq-page__hero">
+      <div class="faq-page__hero-inner">
+        <a class="faq-page__brand" href="/">
+          <img src="/css/gs_logo.png" alt="Genre Sense logo">
+          <span>Genre Sense</span>
+        </a>
+        <button class="faq-page__theme" type="button" data-theme-toggle aria-label="Toggle theme">Dark Mode</button>
+        <div class="faq-page__copy">
+          <h1>Frequently asked questions</h1>
+          <p>Answers from a user point of view, focused on how Genre Sense behaves while you upload, review, save, and manage your analyses.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq-page__content">
+      <div class="faq-grid">
+        <article class="card faq-card">
+          <h3 class="card__title">What can I upload?</h3>
+          <p class="card__subtitle">You can upload common image formats such as JPG, PNG, WEBP, GIF, BMP, and AVIF.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">What does Genre Sense actually predict?</h3>
+          <p class="card__subtitle">It predicts the most likely content genre of your image, such as educational, informational, entertainment, emotional, or promotional.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">Why do I see multiple likely genres?</h3>
+          <p class="card__subtitle">Some images naturally fit more than one category. The app shows ranked probabilities so you can see close alternatives instead of only one hard label.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">Does the app read text from my image?</h3>
+          <p class="card__subtitle">Yes. If your image contains readable text, OCR is used alongside visual features to improve the prediction.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">Why is the confidence not 100%?</h3>
+          <p class="card__subtitle">Confidence reflects how strongly the model believes in a result. Similar genres or unclear visuals usually lower the score.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">Can I save my previous analyses?</h3>
+          <p class="card__subtitle">Yes. Every prediction is stored in your history so you can review it later, filter it, or remove it.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">Can I delete old history entries?</h3>
+          <p class="card__subtitle">Yes. You can delete individual records or select multiple records and remove them in one action from the History page.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">Can I set a preferred genre?</h3>
+          <p class="card__subtitle">Yes. In Profile, you can choose a default genre preference that is highlighted across your prediction workflow.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">Can I change my username or email?</h3>
+          <p class="card__subtitle">Yes, from the Profile page. Those changes update the current device session and are reflected immediately in the UI.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">Can I upload a profile picture?</h3>
+          <p class="card__subtitle">Yes. Your profile picture is stored through the existing upload endpoint and shown in the shared app header.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">Why does a poster sometimes classify as promotional instead of informational?</h3>
+          <p class="card__subtitle">The model weighs both design cues and text intent. If the image looks sales-driven or campaign-style, promotional can outrank informational.</p>
+        </article>
+        <article class="card faq-card">
+          <h3 class="card__title">Is dark mode available?</h3>
+          <p class="card__subtitle">Yes. Use the theme toggle on the login page or inside the app sidebar to switch between light and dark mode.</p>
+        </article>
+      </div>
+
+      <div class="faq-page__footer-actions">
+        <a class="btn btn--secondary" href="/">Back to Login</a>
+        <a class="btn btn--primary" href="/page/about">View About Page</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="auth-footer auth-footer--insta">
+    <span>Powered by Genre Sense</span>
+    <a href="https://www.instagram.com/genre_sense" target="_blank" rel="noreferrer">Instagram: genre_sense</a>
+  </footer>
+
+  <script src="/js/ui.js?v=20260323a"></script>
+</body>
+</html>
